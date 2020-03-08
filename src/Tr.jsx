@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import Td from './Td';
 
 const Tr = React.memo(({trIndex, trData, dispatch}) => {

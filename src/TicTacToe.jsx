@@ -1,5 +1,6 @@
 import React, {useReducer, useCallback, useEffect} from 'react';
 import Table from './Table';
+import ResetButton from './ResetButton';
 
 const initialState = {
   winner: '',
@@ -77,6 +78,9 @@ const TicTacToe = () => {
   const handleTableClick = useCallback(() => {
     dispatch({type: 'SET_WINNER', winner: 'O'});
   }, []);
+  const handleReset = () => {
+    dispatch({type: RESET_GAME});
+  };
   useEffect(() => {
     // recentCell이 바뀔 때 마다, 누가 이겼는지 그때 마다 체크
     const [row, cell] = recentCell;
@@ -105,9 +109,6 @@ const TicTacToe = () => {
     if (win === true) {
       // 승자가 결정된 상태일 때
       dispatch({type: SET_WINNER, winner: turn});
-      setTimeout(() => {
-        dispatch({type: RESET_GAME});
-      }, 3000);
     } else {
       // 승자가 결정되지 않은 상태일 때
       let all = true; // all이 true면 무승부라는 뜻
@@ -122,9 +123,6 @@ const TicTacToe = () => {
       if (all) {
         // 무승부일 때
         dispatch({type: SET_DRAW});
-        setTimeout(() => {
-          dispatch({type: RESET_GAME});
-        }, 3000);
       } else {
         dispatch({type: SET_TURN});
       }
@@ -140,7 +138,8 @@ const TicTacToe = () => {
       {console.log(winner)}
       <Table onClick={handleTableClick} tableData={tableData} dispatch={dispatch} />
       {winner && <div>{winner}님의 승리</div>}
-      {isDraw ? <div>무승부</div> : null}
+      {isDraw && <div>무승부</div>}
+      {winner || isDraw ? <ResetButton onClick={handleReset} /> : null}
     </>
   );
 };
